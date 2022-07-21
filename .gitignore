@@ -1,4 +1,6 @@
 data/
 data_augmented/
 lstm_data/
+lstm_data_augmented/
+checkpoints/
 .ipynb_checkpoints
