@@ -60,14 +60,18 @@ def NMSKernel(im, coord, k):
                 
     return max_val_coord
 
-def GetImageTopNRegionsCutouts(im, N=3):
+def GetImageTopNRegionsCoordCutoutDict(im, N=3):
     upsample_factor = NMS_KERNEL_SIZE
+    coord_cutout_dict = {}
     im = PadMatrixWithValue(im)
     nms_im = NMSImage(im)
     top_n_points = list(GetTopNDistancedPoints(nms_im, N))
     top_n_points = [[x[0]*upsample_factor, x[1]*upsample_factor] for x in top_n_points]
+
+    for point in top_n_points:
+        coord_cutout_dict[(point[0], point[1])] = GetCutout(im, point)
     
-    return GetCoordCutouts(im, top_n_points)
+    return coord_cutout_dict
 
 def GetCoordCutouts(im, coords):
     cutouts = []
