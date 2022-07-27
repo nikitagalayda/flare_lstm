@@ -1,8 +1,6 @@
 data/
-data_augmented/
-lstm_data/
-lstm_data_augmented/
-checkpoints/
 data_features/
+checkpoints/
 resnet50_weights/
+event_records/
 .ipynb_checkpoints
