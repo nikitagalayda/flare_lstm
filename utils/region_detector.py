@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils import *
+from im_utils import *
 
 DEFAULT_WIDTH, DEFAULT_HEIGHT = 64, 64
 IMAGE_WIDTH, IMAGE_HEIGHT = 512, 512

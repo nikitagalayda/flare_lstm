@@ -76,7 +76,7 @@ def conv_block(input_tensor, kernel_size, filters, stage, block, strides=(2, 2))
     x = Activation('relu')(x)
     return x
 
-def CustomResNet50(include_top=False, weights=None,
+def CustomResNet50(include_top=True, weights=None,
              input_tensor=None, input_shape=None,
              pooling=None,
              classes=2):
@@ -184,21 +184,17 @@ def CustomResNet50(include_top=False, weights=None,
     x = identity_block(x, 3, [512, 512, 2048], stage=5, block='c')
 
     x = AveragePooling2D((4, 4), name='avg_pool')(x)
+    x = Dropout(0.4)(x)
 
-#     # x = Flatten()(x)
-#     # x = Dense(1, activation='sigmoid', name='fc2')(x)
-    
     if include_top:
-        x = Flatten()(x)
+        x = GlobalAveragePooling2D()(x)
+        # x = Flatten()(x)
         x = Dense(1, activation='sigmoid', name='fc2')(x)
     else:
         if pooling == 'avg':
             x = GlobalAveragePooling2D()(x)
         elif pooling == 'max':
             x = GlobalMaxPooling2D()(x)
-
-    # x = GlobalAveragePooling2D()(x)
-    # x = Dense(2, activation = 'softmax')(x)
 
     # Ensure that the model takes into account
     # any potential predecessors of `input_tensor`.
