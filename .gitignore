@@ -4,4 +4,5 @@ lstm_data/
 lstm_data_augmented/
 checkpoints/
 data_features/
+resnet50_weights/
 .ipynb_checkpoints
