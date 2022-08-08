@@ -45,6 +45,10 @@ def GetClosestMultipleUp(num, factor):
     
     return num + factor - (num % factor)
 
+def GetClosestMultiple(x, m=6):
+    # m = 6, x = whatever the number that needs to be rounded
+    return (x-(x%m))
+
 def Image2DToDict(im):
     d = {}
     for i in range(im.shape[0]):

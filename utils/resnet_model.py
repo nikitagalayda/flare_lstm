@@ -187,8 +187,8 @@ def CustomResNet50(include_top=True, weights=None,
     x = Dropout(0.4)(x)
 
     if include_top:
-        x = GlobalAveragePooling2D()(x)
-        # x = Flatten()(x)
+        # x = GlobalAveragePooling2D()(x)
+        x = Flatten()(x)
         x = Dense(1, activation='sigmoid', name='fc2')(x)
     else:
         if pooling == 'avg':

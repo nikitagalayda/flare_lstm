@@ -19,20 +19,27 @@ from tensorflow.keras import layers
 
 from data_augmentation import *
 
-def get_simple_conv_model():
+def get_simple_conv_model(include_top=True):
     inp = Input(shape=(64, 64, 1))
     x = Conv2D(filters=48, kernel_size=4)(inp)
     x = BatchNormalization()(x)
-    x = MaxPooling2D(pool_size=(3, 3))(x)
+    x = ReLU()(x)
+    # x = MaxPooling2D(pool_size=(3, 3))(x)
     x = Conv2D(filters=24, kernel_size=3)(x)
     x = BatchNormalization()(x)
-    x = MaxPooling2D(pool_size=(3, 3))(x)
+    x = ReLU()(x)
     x = Conv2D(filters=12, kernel_size=3)(x)
     x = BatchNormalization()(x)
-    x = MaxPooling2D(pool_size=(3, 3))(x)
-    x = Flatten()(x)
-    # x = Dense(128, activation='relu')(x)
-    # x = Dense(1, activation='sigmoid')(x)
+    x = ReLU()(x)
+    x = AveragePooling2D(pool_size=(3, 3))(x)
+    
+    if include_top:
+        x = Flatten()(x)
+        x = Dense(128, activation='relu')(x)
+        x = Dense(1, activation='sigmoid')(x)
+    else:
+        # pass
+        x = GlobalAveragePooling2D()(x)
     
     model = Model(inp, x)
     
