@@ -73,6 +73,16 @@ def GetImageTopNRegionsCoordCutoutDict(im, N=3):
     
     return coord_cutout_dict
 
+def GetImageTopNRegionsCoords(im, N=3):
+    upsample_factor = NMS_KERNEL_SIZE
+    coord_cutout_dict = {}
+    im = PadMatrixWithValue(im)
+    nms_im = NMSImage(im)
+    top_n_points = list(GetTopNDistancedPoints(nms_im, N))
+    top_n_points = [[x[0]*upsample_factor, x[1]*upsample_factor] for x in top_n_points]
+    
+    return top_n_points
+
 def GetCoordCutouts(im, coords):
     cutouts = []
     for coord in coords:
