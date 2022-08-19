@@ -5,6 +5,9 @@ resnet50_weights/
 event_records/
 .ipynb_checkpoints
 frames/
+frames_marked/
 videos/
+*.mp4
+*.png
 bunny.mp4
 test.mp4
