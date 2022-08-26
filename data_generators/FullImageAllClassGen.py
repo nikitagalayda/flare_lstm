@@ -3,19 +3,22 @@ import numpy as np
 import cv2
 import tensorflow as tf
 
-class FullImageGen(tf.keras.utils.Sequence):
+class FullImageAllClassGen(tf.keras.utils.Sequence):
     
     def __init__(self, folder_paths,
                  batch_size,
-                 shuffle=True):
+                 shuffle=True,
+                 image_size=64,
+                num_classes=3):
         
         self.folder_paths = folder_paths.copy()
         self.batch_size = batch_size
         self.shuffle = shuffle
         self.sequence_length = 6
+        self.image_size = image_size
         
         self.n = len(self.folder_paths)
-        self.n_category = 2
+        self.n_category = num_classes
     
     def on_epoch_end(self):
         if self.shuffle:
@@ -37,25 +40,27 @@ class FullImageGen(tf.keras.utils.Sequence):
                 images.append(os.path.join(subdir, f))
         images = sorted(images)
         images = [np.load(x) for x in images[:self.sequence_length]]
-        # if len(images) != 2:
-        #     print(folder)
-        images = [cv2.resize(x, (64, 64), interpolation = cv2.INTER_AREA) for x in images]
-        # images = [sigma_clip(x) for x in images]
+        images = [abs(images[x]-images[x-1]) for x in range(1, self.sequence_length)]
+        images = [cv2.resize(x, (self.image_size, self.image_size), interpolation = cv2.INTER_AREA) for x in images]
         images  = np.array(images)
         return images
 
-    def __get_output(self, path, num_classes=2):
+    def __get_output(self, path):
         label = None
         folder = path.rsplit('/')[-3]
-        if folder == 'positive':
-            label = 1
-        elif folder == 'negative':
+        if folder == 'N':
             label = 0
+        elif folder == 'M':
+            label = 1
+        elif folder == 'X':
+            label = 2
         
-        return label
+        one_hot_label = tf.one_hot(label, self.n_category)
+        
+        return one_hot_label
     
     def __get_data(self, batches):
         X_batch = np.asarray([self.__get_input(x) for x in batches])
-        y_batch = np.asarray([self.__get_output(y, self.n_category) for y in batches])
+        y_batch = np.asarray([self.__get_output(y) for y in batches])
 
         return X_batch, y_batch

@@ -2,16 +2,12 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.layers import *
-from tensorflow.keras import regularizers
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model
 
 def SingleConvLSTMModel(batch_size):
-    # Construct the input layer with no definite frame size.
     inp = Input(shape=(6, 64, 64, 1))
 
-    # We will construct 3 `ConvLSTM2D` layers with batch normalization,
-    # followed by a `Conv3D` layer for the spatiotemporal outputs.
     x = ConvLSTM2D(
         filters=32,
         kernel_size=(5, 5),
