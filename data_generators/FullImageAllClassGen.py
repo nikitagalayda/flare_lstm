@@ -9,12 +9,13 @@ class FullImageAllClassGen(tf.keras.utils.Sequence):
                  batch_size,
                  shuffle=True,
                  image_size=64,
-                num_classes=3):
+                num_classes=3,
+                sequence_length=6):
         
         self.folder_paths = folder_paths.copy()
         self.batch_size = batch_size
         self.shuffle = shuffle
-        self.sequence_length = 6
+        self.sequence_length = sequence_length
         self.image_size = image_size
         
         self.n = len(self.folder_paths)
@@ -50,6 +51,8 @@ class FullImageAllClassGen(tf.keras.utils.Sequence):
         folder = path.rsplit('/')[-3]
         if folder == 'N':
             label = 0
+        # elif folder == 'C':
+        #     label = 1
         elif folder == 'M':
             label = 1
         elif folder == 'X':
