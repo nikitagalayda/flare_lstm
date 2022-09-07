@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[1]:
 
 
 import numpy as np
@@ -46,16 +46,17 @@ from models.bidirectional_convlstm_model import *
 from models.pair_convlstm_model import *
 
 
-# In[6]:
+# In[2]:
 
 
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 
-# In[7]:
+# In[3]:
 
 
 FLARE_CLASS = 'ALL'
+BEST_TRAINED_MODELS_DIR = './best_trained_models'
 
 LSTM_CHECKPOINTS_DIR = './checkpoints/lstm_checkpoints'
 RESNET_CHECKPOINTS_DIR = './checkpoints/resnet_checkpoints'
@@ -96,7 +97,7 @@ LSTM_ALL_CLASS_DURING_DATA_DIR = f'./new_data/{FLARE_CLASS}_lstm_data_during'
 LSTM_ALL_CLASS_LATESTART_DATA_DIR = f'./new_data/{FLARE_CLASS}_lstm_data_latestart'
 
 
-# In[8]:
+# In[4]:
 
 
 def delete_files(folder):
@@ -111,7 +112,7 @@ def delete_files(folder):
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
-# In[9]:
+# In[5]:
 
 
 def GetDataFolders(train_data_dir, val_data_dir):
@@ -132,7 +133,7 @@ def GetDataFolders(train_data_dir, val_data_dir):
     return train_folders, val_folders
 
 
-# In[10]:
+# In[6]:
 
 
 def GetPairDataFolders(train_data_dir, val_data_dir):
@@ -157,7 +158,7 @@ def GetPairDataFolders(train_data_dir, val_data_dir):
     return list(train_folders), list(val_folders)
 
 
-# In[11]:
+# In[7]:
 
 
 def get_labels(generator, feature_extractor):
@@ -174,38 +175,39 @@ def get_labels(generator, feature_extractor):
     return labels
 
 
-# In[12]:
+# In[8]:
 
 
 batch_size=64
 num_classes=3
 sequence_length=6
-train_dir = os.path.join('./new_data/ALL_lstm_data_nmx_during_leftout2013/', 'train')
-val_dir = os.path.join('./new_data/ALL_lstm_data_nmx_during_leftout2013/', 'val')
+data_dir = 'ALL_lstm_data_nmx_prior_leftout2013'
+train_dir = os.path.join(f'./new_data/{data_dir}/', 'train')
+val_dir = os.path.join(f'./new_data/{data_dir}/', 'val')
 train_folders, val_folders = GetPairDataFolders(train_dir, val_dir)
 traingen = FullImageAllClassGen(train_folders, batch_size=batch_size, image_size=64, num_classes=num_classes, sequence_length=sequence_length)
 valgen = FullImageAllClassGen(val_folders, batch_size=26, image_size=64, num_classes=num_classes, sequence_length=sequence_length)
 
 
-# In[13]:
+# In[9]:
 
 
 model = ConvLSTMModelAllClass(batch_size, 64, sequence_length-1, num_classes)
 
 
-# In[14]:
+# In[10]:
 
 
-mc = ModelCheckpoint('best_model.h5', monitor='val_accuracy', save_best_only=True)
+mc = ModelCheckpoint(f'{BEST_TRAINED_MODELS_DIR}/{data_dir}.h5', monitor='val_accuracy', save_best_only=True)
 
 
-# In[15]:
+# In[11]:
 
 
 callbacks_list = [mc]
 
 
-# In[16]:
+# In[12]:
 
 
 adam_fine = Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, decay=0.0002, amsgrad=False)
@@ -219,14 +221,14 @@ model.compile(
 )
 
 
-# In[11]:
+# In[13]:
 
 
 epochs=20
 history = model.fit(traingen, validation_data=valgen, epochs=epochs, callbacks=callbacks_list)
 
 
-# In[12]:
+# In[ ]:
 
 
 plt.plot(history.history['accuracy'])
@@ -238,7 +240,7 @@ plt.legend(['train', 'val'], loc='upper left')
 plt.show()
 
 
-# In[13]:
+# In[ ]:
 
 
 plt.plot(history.history['loss'])
@@ -250,13 +252,13 @@ plt.legend(['train', 'val'], loc='upper left')
 plt.show()
 
 
-# In[14]:
+# In[ ]:
 
 
-model.save_weights(f'{LSTM_CHECKPOINTS_DIR}/full_image_duringflare_nmx_leftout2013_bidirectional_convlstm')
+model.save_weights(f'{LSTM_CHECKPOINTS_DIR}/{data_dir}')
 
 
-# In[12]:
+# In[ ]:
 
 
 # data_folder = './new_data/ALL_lstm_data_during_leftout2013/train/M/AIA20100807_1748_0094/0/full'
