@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[57]:
 
 
 import numpy as np
@@ -31,13 +31,13 @@ from utils.im_utils import *
 from utils.data_augmentation import *
 
 
-# In[2]:
+# In[58]:
 
 
 pd.options.display.max_columns = None
 
 
-# In[3]:
+# In[59]:
 
 
 FLARE_CLASS = 'ALL'
@@ -111,42 +111,7 @@ PAIR_VAL_DATA_POSITIVE_DIR = f'./data/{FLARE_CLASS}_full_image_data/val/positive
 PAIR_VAL_DATA_NEGATIVE_DIR = f'./data/{FLARE_CLASS}_full_image_data/val/negative'
 
 
-# In[4]:
-
-
-t0 = np.load('./new_data/ALL_lstm_data_nmx_during_leftout2013/train/M/AIA20100807_1755_0094/0/full/AIA20100807_1754_0094_0.npy')
-t1 = np.load('./new_data/ALL_lstm_data_nmx_during_leftout2013/train/M/AIA20100807_1755_0094/0/full/AIA20100807_1806_0094_1.npy')
-
-
-
-
-# In[5]:
-
-
-t2 = abs(t1-t0)
-
-
-# In[6]:
-
-
-t3 = abs(abs(t1)-abs(t0))
-
-
-# In[7]:
-
-
-plt.figure(figsize=(10, 10))
-plt.imshow(t2)
-
-
-# In[8]:
-
-
-plt.figure(figsize=(10, 10))
-plt.imshow(t3)
-
-
-# In[9]:
+# In[60]:
 
 
 CDELT = 0.599733;
@@ -157,7 +122,7 @@ DEFAULT_WIDTH, DEFAULT_HEIGHT = 64, 64
 IMAGE_WIDTH, IMAGE_HEIGHT = 512, 512
 
 
-# In[10]:
+# In[61]:
 
 
 def delete_files(folder):
@@ -172,7 +137,7 @@ def delete_files(folder):
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
-# In[11]:
+# In[62]:
 
 
 def delete_data():
@@ -184,7 +149,7 @@ def delete_data():
     delete_files(VAL_DATA_NEGATIVE_DIR)
 
 
-# In[12]:
+# In[63]:
 
 
 def delete_lstm_data():
@@ -196,7 +161,7 @@ def delete_lstm_data():
     delete_files(LSTM_VAL_DATA_NEGATIVE_DIR)
 
 
-# In[13]:
+# In[64]:
 
 
 def delete_pair_data():
@@ -206,7 +171,7 @@ def delete_pair_data():
     delete_files(PAIR_VAL_DATA_NEGATIVE_DIR)
 
 
-# In[14]:
+# In[65]:
 
 
 def delete_augmented_data():
@@ -218,7 +183,7 @@ def delete_augmented_data():
     delete_files(AUG_VAL_DATA_NEGATIVE_DIR)
 
 
-# In[15]:
+# In[66]:
 
 
 def delete_augmented_pair_data():
@@ -230,7 +195,7 @@ def delete_augmented_pair_data():
     delete_files(AUG_PAIR_VAL_DATA_NEGATIVE_DIR)
 
 
-# In[16]:
+# In[67]:
 
 
 def delete_lstm_augmented_pair_data():
@@ -240,7 +205,7 @@ def delete_lstm_augmented_pair_data():
     delete_files(LSTM_AUG_PAIR_VAL_DATA_NEGATIVE_DIR)
 
 
-# In[17]:
+# In[68]:
 
 
 def delete_lstm_end_augmented_pair_data():
@@ -250,7 +215,7 @@ def delete_lstm_end_augmented_pair_data():
     delete_files(LSTM_END_AUG_PAIR_VAL_DATA_NEGATIVE_DIR)
 
 
-# In[18]:
+# In[69]:
 
 
 def reset_data_dir(data_dir):
@@ -258,7 +223,7 @@ def reset_data_dir(data_dir):
     delete_files(os.path.join(data_dir, 'val'))
 
 
-# In[19]:
+# In[70]:
 
 
 def GenerateAugmentedLSTMData(paths, coord, sample_mult):
@@ -276,7 +241,7 @@ def GenerateAugmentedLSTMData(paths, coord, sample_mult):
     return rot_data_arranged#np.concatenate((rot_data, flip_data, zoom_data))
 
 
-# In[20]:
+# In[71]:
 
 
 test_data = [
@@ -289,14 +254,14 @@ test_data = [
 ]
 
 
-# In[21]:
+# In[72]:
 
 
 test = GenerateAugmentedLSTMData(test_data, (20, 100), 60)
 test = np.reshape(test, (60, 6, 64, 64))
 
 
-# In[22]:
+# In[73]:
 
 
 data = []
@@ -312,7 +277,7 @@ data = [np.load(x) for x in data]
 full_data = [np.load(x) for x in full_data]
 
 
-# In[23]:
+# In[74]:
 
 
 def CreateNoFlareCSV(csv_to_copy):
@@ -329,13 +294,13 @@ def CreateNoFlareCSV(csv_to_copy):
     copy_df.to_csv('./event_records/new_events_by_class/N.csv', index=False)
 
 
-# In[24]:
+# In[75]:
 
 
 CreateNoFlareCSV('./event_records/new_events_by_class/M.csv')
 
 
-# In[25]:
+# In[76]:
 
 
 def GetAIAFormatFilename(dt):
@@ -346,7 +311,7 @@ def GetAIAFormatFilename(dt):
     return AIA_data_filename
 
 
-# In[26]:
+# In[77]:
 
 
 # returns a formatted file name of the closest AIA data file to the given datetime
@@ -362,7 +327,7 @@ def GetClosestDataFileByDate(dt, rounding):
     return AIA_data_filename
 
 
-# In[27]:
+# In[78]:
 
 
 def GetCutout(im, coord, N=64):
@@ -373,7 +338,7 @@ def GetCutout(im, coord, N=64):
     return cutout_array
 
 
-# In[28]:
+# In[79]:
 
 
 def GetCenteredCutout(im, coord, N=64):
@@ -386,7 +351,7 @@ def GetCenteredCutout(im, coord, N=64):
     return cutout_array
 
 
-# In[29]:
+# In[80]:
 
 
 # returns an NxN cutout of a file centered around the given coordinate
@@ -401,7 +366,7 @@ def GetFileCutout(path, coord, N=64):
     return GetCutout(im, coord, N)
 
 
-# In[30]:
+# In[81]:
 
 
 # returns an AIA filepath closest to the provided
@@ -416,7 +381,7 @@ def GetAIAPathAtTime(dt):
     return file_path
 
 
-# In[31]:
+# In[82]:
 
 
 def CreateAugmentedCutouts(coord, path, save_path, rotation_step=12):
@@ -433,7 +398,7 @@ def CreateAugmentedCutouts(coord, path, save_path, rotation_step=12):
     
 
 
-# In[32]:
+# In[83]:
 
 
 # returns M consecutive (forward or backward) AIA filepaths starting at time closest to the given time
@@ -466,7 +431,7 @@ def GetAIANCutoutsPaths(start_dt, direction='backward', M=6, cadence=6):
     return np.array(filled_paths)
 
 
-# In[33]:
+# In[84]:
 
 
 # saves directional sequences of NxN cutouts of all events in the csv file to folders with start times as names
@@ -516,7 +481,7 @@ def SaveAIANCutoutsFromDF(df, save_dir, time_delta, num_frames=1, direction='bac
             np.save(f'{mod_save_dir}/{save_filename}_{idx}', cutout)
 
 
-# In[34]:
+# In[85]:
 
 
 # saves directional sequences of NxN cutouts of all events in the csv file to folders with start times as names
@@ -574,7 +539,7 @@ def SaveAIAPairFromDF(df, save_dir, time_delta, num_frames=1, direction='backwar
             np.save(f'{mod_save_dir}/{save_filename}_full', full_image)
 
 
-# In[35]:
+# In[86]:
 
 
 ## saves directional sequences of NxN cutouts of all events in the csv file to folders with start times as names
@@ -632,7 +597,7 @@ def SaveAIAPairFromDF(df, save_dir, time_delta, num_frames=1, direction='backwar
             np.save(f'{mod_save_dir}/{save_filename}_full', full_image)
 
 
-# In[36]:
+# In[87]:
 
 
 def SaveAIAAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, sample_mult=60, direction='backward', flare_class='all'):
@@ -682,7 +647,7 @@ def SaveAIAAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, sample_mu
                 np.save(f'{mod_save_dir}/{save_filename}_full', full_image)
 
 
-# In[37]:
+# In[88]:
 
 
 # saves directional sequences of NxN cutouts of all events in the csv file to folders with start times as names
@@ -748,7 +713,7 @@ def SaveAIANAugmentedDataFromDF(df, save_dir, time_delta, positive=True, num_fra
                 np.save(f'{full_images_folder_path}/{save_filename}', full_image_aug_data[j][i])
 
 
-# In[38]:
+# In[89]:
 
 
 ###### saves directional sequences of NxN cutouts of all events in the csv file to folders with start times as names
@@ -787,20 +752,6 @@ def SaveAIAAllClassAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, s
         if len(paths) == 0:
             print('0 paths')
             continue
-            
-        N_dt = start_dt + datetime.timedelta(minutes=-60)
-        N_closest_file_name = GetClosestDataFileByDate(N_dt, rounding='down')
-        N_closest_file_path = f'{AIA_DATA_DIR}/{N_dt.year}/{N_dt.month:02}/{N_dt.day:02}/{N_closest_file_name}'
-        if not os.path.exists(N_closest_file_path):
-            continue   
-        N_paths = GetAIANCutoutsPaths(N_dt, direction=direction, M=num_frames, cadence=cadence)
-        if len(paths) == 0:
-            print('0 paths')
-            continue
-        
-        paths = sorted(paths)
-        N_paths = sorted(N_paths)
-        N_aug_data = None
         
         if sample_mult == None:
             if goes_cls == 'N':
@@ -834,15 +785,16 @@ def SaveAIAAllClassAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, s
                 np.save(f'{full_images_folder_path}/{save_filename}', full_image_aug_data[j][i])
 
 
-# In[39]:
+# In[90]:
 
 
 ###### saves directional sequences of NxN cutouts of all events in the csv file to folders with start times as names
 
-def SaveAIABinaryAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, sample_mult=None, direction='backward', starting_point='event_starttime', flare_class='all'):
+def SaveAIABinaryAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, sample_mult=None, direction='backward', starting_point='event_starttime', cadence=6):
     # C: 6127 M: 612 X: 38
     # multiplied by 2, 20, 320
     # C: 12,254 M: 12,240 X: 12,160
+    
     nonexistent = 0
     pos_dir = os.path.join(save_dir, 'positive')
     neg_dir = os.path.join(save_dir, 'negative')
@@ -850,11 +802,11 @@ def SaveAIABinaryAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, sam
         os.makedirs(pos_dir)
     if not os.path.exists(neg_dir):
         os.makedirs(neg_dir)
-        
+    
+    
+    
     for index, row in df.iterrows():
         raw_time, goes_cls = parse_time(row[starting_point], precision=0), row['fl_goescls'][0]
-        if goes_cls != 'N' and goes_cls != 'C' and goes_cls != 'M' and goes_cls != 'X':
-            continue
             
         start_dt, y, x = raw_time.datetime, int(row['hpc_x']), int(row['hpc_y'])
         prior_dt = start_dt + datetime.timedelta(minutes=time_delta)
@@ -869,7 +821,8 @@ def SaveAIABinaryAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, sam
             nonexistent+=1
             continue
             
-        paths = GetAIANCutoutsPaths(prior_dt, direction=direction, M=num_frames, cadence=6)
+        paths = GetAIANCutoutsPaths(prior_dt, direction=direction, M=num_frames, cadence=cadence)
+        
         if len(paths) != num_frames:
             print(start_dt)
             print(len(paths))
@@ -877,24 +830,10 @@ def SaveAIABinaryAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, sam
         if len(paths) == 0:
             print('0 paths')
             continue
-            
-        N_dt = start_dt + datetime.timedelta(minutes=-60)
-        N_closest_file_name = GetClosestDataFileByDate(N_dt, rounding='up')
-        N_closest_file_path = f'{AIA_DATA_DIR}/{N_dt.year}/{N_dt.month:02}/{N_dt.day:02}/{N_closest_file_name}'
-        if not os.path.exists(N_closest_file_path):
-            continue   
-        N_paths = GetAIANCutoutsPaths(N_dt, direction=direction, M=num_frames, cadence=6)
-        if len(paths) == 0:
-            print('0 paths')
-            continue
-        
-        paths = sorted(paths)
-        N_paths = sorted(N_paths)
-        N_aug_data = None
         
         if sample_mult == None:
             if goes_cls == 'N':
-                sample_mult = 20
+                sample_mult = 40
             elif goes_cls == 'C':
                 sample_mult = 1   
             elif goes_cls == 'M':
@@ -928,7 +867,7 @@ def SaveAIABinaryAugmentedDataFromDF(df, save_dir, time_delta, num_frames=1, sam
                 np.save(f'{full_images_folder_path}/{save_filename}', full_image_aug_data[j][i])
 
 
-# In[40]:
+# In[91]:
 
 
 def CreateResnetData(test_split=0.25, val_split=0.15, classes='all'):
@@ -945,7 +884,7 @@ def CreateResnetData(test_split=0.25, val_split=0.15, classes='all'):
             CreateResnetDataOfClass(class_df, test_split, val_split, classes)
 
 
-# In[41]:
+# In[92]:
 
 
 def CreateLSTMData(val_split=0.3, classes='all'):
@@ -962,7 +901,7 @@ def CreateLSTMData(val_split=0.3, classes='all'):
             CreateLSTMDataOfClass(class_df, val_split, classes)
 
 
-# In[42]:
+# In[93]:
 
 
 def CreateLSTMPairData(val_split=0.3, classes='all'):
@@ -979,7 +918,7 @@ def CreateLSTMPairData(val_split=0.3, classes='all'):
             CreateLSTMPairDataOfClass(class_df, val_split, classes)
 
 
-# In[43]:
+# In[94]:
 
 
 def CreatePairData(val_split=0.3, classes='all'):
@@ -996,7 +935,7 @@ def CreatePairData(val_split=0.3, classes='all'):
             CreatePairDataOfClass(class_df, val_split, classes)
 
 
-# In[44]:
+# In[95]:
 
 
 def CreateAugmentedData(val_split=0.3, classes='all'):
@@ -1014,7 +953,7 @@ def CreateAugmentedData(val_split=0.3, classes='all'):
             CreateAugmentedDataOfClass(class_df, val_split, classes)
 
 
-# In[45]:
+# In[96]:
 
 
 def CreateAugmentedLSTMData(val_split=0.3, classes='all'):
@@ -1032,7 +971,7 @@ def CreateAugmentedLSTMData(val_split=0.3, classes='all'):
             CreateAugmentedLSTMDataOfClass(class_df, val_split, classes)
 
 
-# In[46]:
+# In[97]:
 
 
 def CreateEndAugmentedLSTMData(val_split=0.3, classes='all'):
@@ -1049,10 +988,10 @@ def CreateEndAugmentedLSTMData(val_split=0.3, classes='all'):
             CreateEndAugmentedLSTMDataOfClass(class_df, val_split, classes)
 
 
-# In[47]:
+# In[98]:
 
 
-def CreateAugmentedLSTMDataAll(save_dir, direction, val_year, starting_point='event_starttime', classes=['M', 'X', 'N'], cadence=6):
+def CreateAugmentedLSTMDataAll(save_dir, direction, val_year, starting_point='event_starttime', classes=['M', 'X', 'N'], cadence=6, time_delta=0):
     reset_data_dir(save_dir)
     event_files = []
     
@@ -1076,37 +1015,44 @@ def CreateAugmentedLSTMDataAll(save_dir, direction, val_year, starting_point='ev
                 train_df = class_df[class_df_pruned_rows != val_year]
                 val_df = class_df[class_df_pruned_rows == val_year] 
             
-            p.apply_async(CreateAugmentedLSTMDataAllClass, (save_dir, train_df, val_df, direction, starting_point, cadence))
+            p.apply_async(CreateAugmentedLSTMDataAllClass, (save_dir, train_df, val_df, direction, starting_point, cadence, time_delta))
     p.close()
     p.join()
 
 
-# In[48]:
+# In[99]:
 
 
-def CreateAugmentedLSTMDataBinary(save_dir, direction, leftout_year=None, starting_point='event_starttime', val_split=0.3, classes='all'):
+def CreateAugmentedLSTMDataBinary(save_dir, direction, val_year, starting_point='event_starttime', classes=['M', 'X', 'N'], cadence=6, time_delta=0):
     reset_data_dir(save_dir)
-    train_split = 1-val_split
     event_files = []
+    
+    val_dfs = []
+    
     p = Pool(8)
     for subdir, dirs, files in os.walk(EVENTS_BY_CLASS_DIR):
         for file in files:
             event_files.append(os.path.join(subdir, file))
     for file in event_files:
-        filename = file.rsplit('/', 1)[-1]
-        if filename == 'N.csv' or filename == 'M.csv' or filename == 'X.csv' or filename == 'C.csv':
+        filename = file.rsplit('/', 1)[-1].rsplit('.', 1)[0]
+        if filename in classes:
             print(file.rsplit('/', 1)[-1])
             class_df = pd.read_csv(file)
             
-            if leftout_year != None:
+            train_df = class_df
+            val_df = None
+            
+            if val_year != None:
                 class_df_pruned_rows = np.array([parse_time(x).datetime.year for x in class_df.event_starttime])
-                class_df = class_df[class_df_pruned_rows != leftout_year]
-            p.apply_async(CreateBinaryAugmentedLSTMData, (save_dir, class_df, val_split, direction, starting_point, classes))
+                train_df = class_df[class_df_pruned_rows != val_year]
+                val_df = class_df[class_df_pruned_rows == val_year] 
+            
+            p.apply_async(CreateBinaryAugmentedLSTMData, (save_dir, train_df, val_df, direction, starting_point, cadence, time_delta))
     p.close()
     p.join()
 
 
-# In[49]:
+# In[100]:
 
 
 def CreateResnetDataOfClass(class_df, test_split, val_split, classes='all'):
@@ -1132,7 +1078,7 @@ def CreateResnetDataOfClass(class_df, test_split, val_split, classes='all'):
     # print(f'total training data: {len(train_df)*2}, total val data: {len(val_df)*2}, total test data: {len(test_df)*2}')
 
 
-# In[50]:
+# In[101]:
 
 
 def CreateLSTMDataOfClass(class_df, test_split, val_split, classes='all'):
@@ -1157,7 +1103,7 @@ def CreateLSTMDataOfClass(class_df, test_split, val_split, classes='all'):
     SaveAIANCutoutsFromDF(class_df, LSTM_TRAIN_DATA_EXT_NEGATIVE_DIR, random_time_delta, num_frames=20, direction='backward', flare_class=classes)
 
 
-# In[51]:
+# In[102]:
 
 
 def CreateLSTMPairDataOfClass(class_df, val_split, classes='all'):
@@ -1178,7 +1124,7 @@ def CreateLSTMPairDataOfClass(class_df, val_split, classes='all'):
     SaveAIANCutoutsFromDF(val_df, LSTM_AUG_PAIR_VAL_DATA_NEGATIVE_DIR, random_time_delta, num_frames=6, direction='backward', flare_class=classes)
 
 
-# In[52]:
+# In[103]:
 
 
 def CreatePairDataOfClass(class_df, val_split, classes='all'):
@@ -1197,7 +1143,7 @@ def CreatePairDataOfClass(class_df, val_split, classes='all'):
     SaveAIAPairFromDF(val_df, PAIR_VAL_DATA_NEGATIVE_DIR, random_time_delta, num_frames=1, direction='backward', flare_class=classes)
 
 
-# In[53]:
+# In[104]:
 
 
 def CreateAugmentedDataOfClass(class_df, val_split, classes='all'):
@@ -1220,7 +1166,7 @@ def CreateAugmentedDataOfClass(class_df, val_split, classes='all'):
     SaveAIAPairFromDF(val_df, AUG_PAIR_VAL_DATA_NEGATIVE_DIR, random_time_delta, num_frames=1, direction='backward', flare_class=classes)
 
 
-# In[54]:
+# In[105]:
 
 
 def CreateAugmentedLSTMDataOfClass(class_df, val_split, classes='all'):
@@ -1240,7 +1186,7 @@ def CreateAugmentedLSTMDataOfClass(class_df, val_split, classes='all'):
     SaveAIANAugmentedDataFromDF(val_df, LSTM_AUG_PAIR_VAL_DATA_NEGATIVE_DIR, random_time_delta, positive=False, num_frames=num_frames, sample_mult=1, direction='forward', flare_class=classes)
 
 
-# In[55]:
+# In[106]:
 
 
 def CreateEndAugmentedLSTMDataOfClass(class_df, val_split, classes='all'):
@@ -1259,183 +1205,120 @@ def CreateEndAugmentedLSTMDataOfClass(class_df, val_split, classes='all'):
     SaveAIANAugmentedDataFromDF(val_df, LSTM_END_AUG_PAIR_VAL_DATA_NEGATIVE_DIR, random_time_delta, num_frames=6, sample_mult=1, direction='backward', flare_class=classes)
 
 
-# In[56]:
+# In[107]:
 
 
-def CreateAugmentedLSTMDataAllClass(save_dir, train_df, val_df, direction, starting_point='event_starttime', cadence=6):
+def CreateAugmentedLSTMDataAllClass(save_dir, train_df, val_df, direction, starting_point='event_starttime', cadence=6, time_delta=0):
     print('started CreateAugmentedLSTMDataAllClass')
     train_df = train_df.sample(frac=1).reset_index(drop=True)
     
-    time_delta = 0
     num_frames = 6
     train_dir = os.path.join(save_dir, 'train')
     val_dir = os.path.join(save_dir, 'val')
     
-    SaveAIAAllClassAugmentedDataFromDF(train_df, train_dir, time_delta, num_frames=num_frames, sample_mult=None, direction=direction, starting_point=starting_point, cadence=cadence)   
-    SaveAIAAllClassAugmentedDataFromDF(val_df, val_dir, time_delta, num_frames=num_frames, sample_mult=1, direction=direction, starting_point=starting_point, cadence=cadence)
+    SaveAIAAllClassAugmentedDataFromDF(train_df, train_dir, time_delta, num_frames=num_frames, sample_mult=None, direction=direction, starting_point=starting_point, cadence=cadence, time_delta=time_delta)   
+    SaveAIAAllClassAugmentedDataFromDF(val_df, val_dir, time_delta, num_frames=num_frames, sample_mult=1, direction=direction, starting_point=starting_point, cadence=cadence, time_delta=time_delta)
 
 
-# In[57]:
+# In[108]:
 
 
-def CreateBinaryAugmentedLSTMData(save_dir, class_df, val_split, direction, starting_point='event_starttime', classes='all'):
+def CreateBinaryAugmentedLSTMData(save_dir, train_df, val_split, direction, starting_point='event_starttime', cadence=6, time_delta=0):
     print('started CreateBinaryAugmentedLSTMData')
-    class_df = class_df.sample(frac=1).reset_index(drop=True)
-    event_num = len(class_df)
-    val_split_num = math.ceil(event_num*val_split)
-    val_df = class_df[-val_split_num:]
-    class_df = class_df[:-val_split_num]
-    time_delta = 0
+    train_df = train_df.sample(frac=1).reset_index(drop=True)
+
     num_frames = 6
     train_dir = os.path.join(save_dir, 'train')
     val_dir = os.path.join(save_dir, 'val')
     
-    SaveAIABinaryAugmentedDataFromDF(class_df, train_dir, time_delta, num_frames=num_frames, sample_mult=None, direction=direction, starting_point=starting_point, flare_class=classes)   
-    SaveAIABinaryAugmentedDataFromDF(val_df, val_dir, time_delta, num_frames=num_frames, sample_mult=1, direction=direction, starting_point=starting_point, flare_class=classes)
+    SaveAIABinaryAugmentedDataFromDF(train_df, train_dir, time_delta, num_frames=num_frames, sample_mult=None, direction=direction, starting_point=starting_point, cadence=cadence)   
+    SaveAIABinaryAugmentedDataFromDF(val_df, val_dir, time_delta, num_frames=num_frames, sample_mult=1, direction=direction, starting_point=starting_point, cadence=cadence)
 
 
-# In[58]:
+# In[109]:
 
 
-# CreateAugmentedLSTMDataAll('./new_data/ALL_lstm_data_nmx_prior_leftout2013_cadence6', 'backward', 2013, 'event_starttime', ['N', 'M', 'X'], cadence=6)
-
-
-
-# In[59]:
-
-
-CreateAugmentedLSTMDataAll('./new_data/ALL_lstm_data_nmx_during_leftout2013_cadence6', 'backward', 2013, 'event_starttime', ['N', 'M', 'X'], cadence=6)
-
-
-# In[ ]:
-
-
-
+# ALL_lstm_data_nmx_during_leftout2013_cadence6
+# ALL_lstm_data_nmx_midstart_leftout2013_cadence12
+# BINARY_lstm_data_nmx_during_leftout2013_cadence12
+# BINARY_lstm_data_nmx_during_leftout2013_cadence6
+# BINARY_lstm_data_nmx_prior_leftout2013_cadence12
+# BINARY_lstm_data_nmx_prior_leftout2013_cadence6
 
 
 # In[ ]:
 
 
+CreateAugmentedLSTMDataAll('./new_data/ALL_lstm_data_nmx_during_leftout2013_cadence6', 'forward', 2013, 'event_starttime', ['N', 'M', 'X'], cadence=6, time_delta=0)
 
 
-
-# In[126]:
-
-
-# CreateResnetData(classes=FLARE_CLASS)
+# In[ ]:
 
 
-# In[127]:
+CreateAugmentedLSTMDataAll('./new_data/ALL_lstm_data_nmx_midstart_leftout2013_cadence12', 'forward', 2013, 'event_starttime', ['N', 'M', 'X'], cadence=12, time_delta=-18)
 
 
-# CreateLSTMData(classes=FLARE_CLASS)
+# In[ ]:
 
 
-# In[128]:
+CreateAugmentedLSTMDataBinary('./new_data/BINARY_lstm_data_nmx_during_leftout2013_cadence12', 'forward', 2013, 'event_starttime', ['N', 'M', 'X'], cadence=12, time_delta=0)
 
 
-# CreatePairData(classes=FLARE_CLASS)
+# In[ ]:
 
 
-# In[129]:
+CreateAugmentedLSTMDataBinary('./new_data/BINARY_lstm_data_nmx_during_leftout2013_cadence6', 'forward', 2013, 'event_starttime', ['N', 'M', 'X'], cadence=6, time_delta=0)
 
 
-# CreateAugmentedData(classes=FLARE_CLASS)
+# In[ ]:
 
 
-# In[130]:
+CreateAugmentedLSTMDataBinary('./new_data/BINARY_lstm_data_nmx_prior_leftout2013_cadence12', 'backward', 2013, 'event_starttime', ['N', 'M', 'X'], cadence=12, time_delta=0)
 
 
-# CreateAugmentedLSTMData(classes=FLARE_CLASS)
+# In[ ]:
 
 
-# In[131]:
-
-
-# CreateEndAugmentedLSTMData(classes=FLARE_CLASS)
-
-
-# In[132]:
-
-
-# t = []
-# data_paths = []
-# for subdir, dirs, files in os.walk(f'./new_data/ALL_lstm_data_prior/train/X/AIA20110907_2232_0094/0/sequence'):
-#     for f in files:
-#         data_paths.append(os.path.join(subdir, f))
-# data_paths = sorted(data_paths)
-# t = [np.load(x) for x in data_paths]
-# t = [abs(t[x]-t[x-1]) for x in range(1, 6)]
-
-
-# In[133]:
-
-
-# fig, axes = plt.subplots(2, 3, figsize=(10, 8))
-
-# for idx, ax in enumerate(axes.flat):
-#     ax.imshow(t[idx], cmap='jet')
-#     ax.set_title(f"Frame {idx + 1}")
-#     ax.axis("off")
-
-# plt.show()
-
-
-# In[134]:
-
-
-# CreateAugmentedLSTMDataAll('./new_data/ALL_lstm_data_during_leftout2013', 'forward', 2013, 'event_starttime')
+CreateAugmentedLSTMDataBinary('./new_data/BINARY_lstm_data_nmx_prior_leftout2013_cadence6', 'backward', 2013, 'event_starttime', ['N', 'M', 'X'], cadence=6, time_delta=0)
 
 
 # In[185]:
 
 
-total_train_data = 0
-total_test_data = 0
-total_val_data = 0
+# total_train_data = 0
+# total_test_data = 0
+# total_val_data = 0
 
-train_dir = os.path.join(LSTM_ALL_CLASS_HYBRID_DATA_DIR, 'train')
-val_dir = os.path.join(LSTM_ALL_CLASS_HYBRID_DATA_DIR, 'val')
+# train_dir = os.path.join(LSTM_ALL_CLASS_HYBRID_DATA_DIR, 'train')
+# val_dir = os.path.join(LSTM_ALL_CLASS_HYBRID_DATA_DIR, 'val')
 
-for subdir, dirs, files in os.walk(train_dir):
-    total_train_data += len(files)
+# for subdir, dirs, files in os.walk(train_dir):
+#     total_train_data += len(files)
     
-for subdir, dirs, files in os.walk(val_dir):
-    total_val_data += len(files)
-    
-# for subdir, dirs, files in os.walk(TEST_DATA_POSITIVE_DIR):
-#     total_test_data += len(files)
-    
-# for subdir, dirs, files in os.walk(TEST_DATA_NEGATIVE_DIR):
-#     total_test_data += len(files)
-    
-# for subdir, dirs, files in os.walk(AUG_PAIR_VAL_DATA_POSITIVE_DIR):
+# for subdir, dirs, files in os.walk(val_dir):
 #     total_val_data += len(files)
     
-# for subdir, dirs, files in os.walk(AUG_PAIR_VAL_DATA_NEGATIVE_DIR):
-#     total_val_data += len(files)
-    
-print(f'train data: {total_train_data} val data: {total_val_data} test data: {total_test_data}')
+# print(f'train data: {total_train_data} val data: {total_val_data} test data: {total_test_data}')
 
 
 # In[81]:
 
 
-data_folder = './data_1600/ALL_lstm_data_during_leftout2013/train/M/AIA20141227_0203_1600/0/full'
-paths = []
-for subdir, dirs, files in os.walk(data_folder):
-    for f in files:
-        paths.append(os.path.join(subdir, f))
-paths = sorted(paths)
-for p in paths:
-    print(p)
+# data_folder = './data_1600/ALL_lstm_data_during_leftout2013/train/M/AIA20141227_0203_1600/0/full'
+# paths = []
+# for subdir, dirs, files in os.walk(data_folder):
+#     for f in files:
+#         paths.append(os.path.join(subdir, f))
+# paths = sorted(paths)
+# for p in paths:
+#     print(p)
 
-fig, axes = plt.subplots(2, 3, figsize=(10, 8))
+# fig, axes = plt.subplots(2, 3, figsize=(10, 8))
 
-for idx, ax in enumerate(axes.flat):
-    ax.imshow(np.load(paths[idx]), cmap='jet')
-    ax.set_title(f"Frame {idx + 1}")
-    ax.axis("off")
+# for idx, ax in enumerate(axes.flat):
+#     ax.imshow(np.load(paths[idx]), cmap='jet')
+#     ax.set_title(f"Frame {idx + 1}")
+#     ax.axis("off")
 
-plt.show()
+# plt.show()
 
