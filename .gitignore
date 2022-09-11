@@ -4,10 +4,13 @@ new_data/
 data_features/
 checkpoints/
 resnet50_weights/
-event_records/
 .ipynb_checkpoints
 frames/
 videos/
+best_trained_models/
 *.mp4
 *.png
+*.out
+*.py
+*.h5
 *.out

@@ -178,10 +178,10 @@ def get_labels(generator, feature_extractor):
 # In[8]:
 
 
-batch_size=64
+batch_size=128
 num_classes=3
 sequence_length=6
-data_dir = 'ALL_lstm_data_nmx_prior_leftout2013'
+data_dir = 'ALL_lstm_data_nmx_prior_leftout2013_cadence6'
 train_dir = os.path.join(f'./new_data/{data_dir}/', 'train')
 val_dir = os.path.join(f'./new_data/{data_dir}/', 'val')
 train_folders, val_folders = GetPairDataFolders(train_dir, val_dir)
@@ -224,7 +224,7 @@ model.compile(
 # In[13]:
 
 
-epochs=20
+epochs=200
 history = model.fit(traingen, validation_data=valgen, epochs=epochs, callbacks=callbacks_list)
 
 

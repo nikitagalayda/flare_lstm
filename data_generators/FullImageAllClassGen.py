@@ -49,7 +49,7 @@ class FullImageAllClassGen(tf.keras.utils.Sequence):
     def __get_output(self, path):
         label = None
         folder = path.rsplit('/')[-3]
-        if folder == 'N':
+        if folder == 'H':
             label = 0
         # elif folder == 'C':
         #     label = 1
