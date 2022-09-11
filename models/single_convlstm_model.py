@@ -10,7 +10,7 @@ def SingleConvLSTMModel(batch_size, image_size, sequence_length):
     print(inp.shape)
     x = Bidirectional(ConvLSTM2D(
         filters=32,
-        kernel_size=(5, 5),
+        kernel_size=(3, 3),
         padding="same",
         return_sequences=True,
         activation="relu",
@@ -26,7 +26,7 @@ def SingleConvLSTMModel(batch_size, image_size, sequence_length):
     x = BatchNormalization()(x)
     x = Bidirectional(ConvLSTM2D(
         filters=32,
-        kernel_size=(1, 1),
+        kernel_size=(3, 3),
         padding="same",
         return_sequences=True,
         activation="relu",

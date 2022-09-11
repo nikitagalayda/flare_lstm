@@ -41,7 +41,7 @@ class FullImageAllClassGen(tf.keras.utils.Sequence):
                 images.append(os.path.join(subdir, f))
         images = sorted(images)
         images = [np.load(x) for x in images[:self.sequence_length]]
-        images = [abs(images[x]-images[x-1]) for x in range(1, self.sequence_length)]
+        images = [abs(abs(images[x])-abs(images[x-1])) for x in range(1, self.sequence_length)]
         images = [cv2.resize(x, (self.image_size, self.image_size), interpolation = cv2.INTER_AREA) for x in images]
         images  = np.array(images)
         return images

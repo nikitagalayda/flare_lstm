@@ -11,10 +11,9 @@ def ConvLSTMModelAllClass(batch_size, image_size, sequence_length, num_classes=3
     inp = Input(shape=(sequence_length, image_size, image_size, 1))
     
     x = SingleConvLSTMModel(batch_size, image_size, sequence_length)(inp)
-    Conv2D(
+    x = Conv2D(
         filters=128,
         kernel_size=(3, 3),
-        strides=(2, 2)
     )(x)
     x = GlobalMaxPooling3D()(x)
     x = Dense(128, activation='relu')(x)
