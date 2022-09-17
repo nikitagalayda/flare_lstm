@@ -8,6 +8,9 @@ resnet50_weights/
 frames/
 videos/
 best_trained_models/
+new_best_trained_models/
+python_scripts/
+logs/
 *.mp4
 *.png
 *.out
