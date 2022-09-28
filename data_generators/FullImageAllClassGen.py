@@ -9,9 +9,9 @@ class FullImageAllClassGen(tf.keras.utils.Sequence):
         self,
         folder_paths,
         batch_size,
+        flare_classes,
         shuffle=True,
         image_size=64,
-        num_classes=3,
         sequence_length=6,
     ):
 
@@ -22,13 +22,15 @@ class FullImageAllClassGen(tf.keras.utils.Sequence):
         self.image_size = image_size
 
         self.n = len(self.folder_paths)
-        self.n_category = num_classes
+        self.n_category = len(flare_classes)
+        self.flare_classes = flare_classes
 
     def on_epoch_end(self):
         if self.shuffle:
             np.random.shuffle(self.folder_paths)
 
     def __getitem__(self, index):
+        # batches: batches of folder paths to data
         batches = self.folder_paths[
             index * self.batch_size : (index + 1) * self.batch_size
         ]
@@ -45,7 +47,7 @@ class FullImageAllClassGen(tf.keras.utils.Sequence):
             for f in files:
                 images.append(os.path.join(subdir, f))
         images = sorted(images)
-        images = [np.load(x) for x in images[: self.sequence_length]]
+        images = [np.load(x) for x in images[:self.sequence_length]]
         images = [
             abs(abs(images[x]) - abs(images[x - 1]))
             for x in range(1, self.sequence_length)
@@ -62,16 +64,9 @@ class FullImageAllClassGen(tf.keras.utils.Sequence):
     def __get_output(self, path):
         label = None
         folder = path.rsplit("/")[-3]
-        if folder == "H":
-            label = 0
-        # elif folder == "C":
-        #     label = 1
-        elif folder == "M":
-            label = 1
-        elif folder == "X":
-            label = 2
+        folder_index_label = self.flare_classes.index(folder)
 
-        one_hot_label = tf.one_hot(label, self.n_category)
+        one_hot_label = tf.one_hot(folder_index_label, self.n_category)
 
         return one_hot_label
 
